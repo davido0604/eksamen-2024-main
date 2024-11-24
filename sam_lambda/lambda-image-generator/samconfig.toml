@@ -1,0 +1,10 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "lambda-image-generator-v8"
+resolve_s3 = true
+s3_prefix = "lambda-image-generator-v8"
+region = "eu-west-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "BucketName=\"pgr301-couch-explorers\""
+image_repositories = []

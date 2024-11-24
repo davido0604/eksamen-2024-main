@@ -1,16 +1,28 @@
-import os
 import json
-import random
+import os
 import boto3
 import base64
+import random
 
 bedrock_client = boto3.client("bedrock-runtime", region_name="us-east-1")
 s3_client = boto3.client("s3")
 
-def generate_image(prompt, bucket_name):
+bucket_name = os.environ['BUCKET_NAME']
+
+def lambda_handler(event, context):
+    """Lambda function for generating images with AWS Bedrock and saving to S3."""
     try:
+        body = json.loads(event.get("body", "{}"))
+        prompt = body.get("prompt")
+        if not prompt:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({"error": "Missing 'prompt' in request body"})
+            }
+
+        candidate_number = "57"
         seed = random.randint(0, 2147483647)
-        s3_image_path = f"generated_images/titan_{seed}.png"
+        s3_image_path = f"{candidate_number}/generated_images/titan_{seed}.png"
 
         native_request = {
             "taskType": "TEXT_IMAGE",
@@ -22,7 +34,7 @@ def generate_image(prompt, bucket_name):
                 "height": 1024,
                 "width": 1024,
                 "seed": seed,
-            },
+            }
         }
 
         response = bedrock_client.invoke_model(
@@ -30,24 +42,20 @@ def generate_image(prompt, bucket_name):
             body=json.dumps(native_request)
         )
         model_response = json.loads(response["body"].read())
-
+        
         base64_image_data = model_response["images"][0]
         image_data = base64.b64decode(base64_image_data)
 
         s3_client.put_object(Bucket=bucket_name, Key=s3_image_path, Body=image_data)
 
-        return f"https://{bucket_name}.s3.amazonaws.com/{s3_image_path}"
+        image_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_image_path}"
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"image_url": image_url})
+        }
     except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-if __name__ == "__main__":
-    bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
-
-    prompt = input("Enter a prompt for the image: ")
-
-    image_url = generate_image(prompt, bucket_name)
-    if image_url:
-        print(f"Image successfully generated and uploaded to S3. URL: {image_url}")
-    else:
-        print("Failed to generate the image.")
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"error": str(e)})
+        }
