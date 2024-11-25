@@ -30,8 +30,7 @@ jobs:
         run: cd sam_lambda/lambda-image-generator
 
       - name: Install AWS SAM CLI
-        run: |
-          pip install aws-sam-cli
+        run: pip install aws-sam-cli
 
       - name: Build SAM Application
         run: |
@@ -45,4 +44,5 @@ jobs:
             --stack-name lambda-image-generator \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
-            --parameter-overrides BucketName=pgr301-couch-explorers
+            --parameter-overrides BucketName=pgr301-couch-explorers \
+            --no-confirm-changeset
