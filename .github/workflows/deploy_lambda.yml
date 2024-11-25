@@ -1,0 +1,37 @@
+name: Deploy SAM Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy SAM Application to AWS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Install AWS SAM CLI
+        run: |
+          sudo pip install aws-sam-cli
+
+      - name: Build SAM Application
+        run: sam build
+
+      - name: Deploy SAM Application
+        run: |
+          sam deploy \
+            --stack-name lambda-image-generator \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides BucketName=pgr301-couch-explorers
