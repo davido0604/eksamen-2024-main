@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     name: Deploy SAM Application to AWS
@@ -12,12 +13,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Verify correct path
-        run: ls -R eksamen-2024-main/sam_lambda/lambda-image-generator
+        run: ls -R
 
-      - name: Change to lambda-image-generator directory
-        working-directory: eksamen-2024-main/sam_lambda/lambda-image-generator
-        run: |
-          echo "Switched to the correct directory."
+      - name: Navigate to SAM Lambda Directory
+        run: cd eksamen-2024-main/sam_lambda/lambda-image-generator
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -30,12 +29,13 @@ jobs:
         run: sudo pip install aws-sam-cli
 
       - name: Build SAM Application
-        working-directory: eksamen-2024-main/sam_lambda/lambda-image-generator
-        run: sam build
+        run: |
+          cd eksamen-2024-main/sam_lambda/lambda-image-generator
+          sam build
 
       - name: Deploy SAM Application
-        working-directory: eksamen-2024-main/sam_lambda/lambda-image-generator
         run: |
+          cd eksamen-2024-main/sam_lambda/lambda-image-generator
           sam deploy \
             --stack-name lambda-image-generator \
             --resolve-s3 \
