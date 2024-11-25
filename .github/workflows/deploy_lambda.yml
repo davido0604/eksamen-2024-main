@@ -26,20 +26,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      - name: Navigate to SAM directory
-        run: cd sam_lambda/lambda-image-generator
-
       - name: Install AWS SAM CLI
-        run: pip install aws-sam-cli
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install aws-sam-cli
 
       - name: Build SAM Application
-        run: |
-          cd sam_lambda/lambda-image-generator
-          sam build
+        working-directory: sam_lambda/lambda-image-generator
+        run: sam build
 
       - name: Deploy SAM Application
+        working-directory: sam_lambda/lambda-image-generator
         run: |
-          cd sam_lambda/lambda-image-generator
           sam deploy \
             --stack-name lambda-image-generator \
             --resolve-s3 \

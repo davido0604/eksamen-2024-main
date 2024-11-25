@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "lambda-image-generator-v8"
+stack_name = "lambda-image-generator-v9"
 resolve_s3 = true
-s3_prefix = "lambda-image-generator-v8"
+s3_prefix = "lambda-image-generator-v9"
 region = "eu-west-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
