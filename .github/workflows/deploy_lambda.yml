@@ -24,7 +24,7 @@ jobs:
       - name: Install AWS SAM CLI
         run: sudo pip install aws-sam-cli
 
-      - name: Debug: Verify directory exists
+      - name: Verify directory exists
         run: |
           cd eksamen-2024-main/sam_lambda/lambda-image-generator
           pwd
