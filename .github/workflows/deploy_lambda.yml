@@ -1,4 +1,5 @@
 name: Deploy SAM Application
+
 on:
   push:
     branches:
@@ -8,18 +9,15 @@ jobs:
   deploy:
     name: Deploy SAM Application to AWS
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Verify Directory Structure
-        run: ls -R eksamen-2024-main
-
-      - name: Verify Full Repository Structure
-        run: ls -R
-
-      - name: Navigate to SAM Lambda Directory
-        run: cd eksamen-2024-main/sam_lambda/lambda-image-generator
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -28,17 +26,21 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
+      - name: Navigate to SAM directory
+        run: cd sam_lambda/lambda-image-generator
+
       - name: Install AWS SAM CLI
-        run: sudo pip install aws-sam-cli
+        run: |
+          pip install aws-sam-cli
 
       - name: Build SAM Application
         run: |
-          cd eksamen-2024-main/sam_lambda/lambda-image-generator
+          cd sam_lambda/lambda-image-generator
           sam build
 
       - name: Deploy SAM Application
         run: |
-          cd eksamen-2024-main/sam_lambda/lambda-image-generator
+          cd sam_lambda/lambda-image-generator
           sam deploy \
             --stack-name lambda-image-generator \
             --resolve-s3 \
