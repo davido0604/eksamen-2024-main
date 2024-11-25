@@ -35,6 +35,14 @@ jobs:
         working-directory: sam_lambda/lambda-image-generator
         run: sam build
 
+      - name: Delete Existing Stack
+        run: |
+          aws cloudformation delete-stack --stack-name lambda-image-generator || true
+          echo "Waiting for stack deletion to complete..."
+          aws cloudformation wait stack-delete-complete --stack-name lambda-image-generator
+        env:
+          AWS_REGION: eu-west-1
+
       - name: Deploy SAM Application
         working-directory: sam_lambda/lambda-image-generator
         run: |
