@@ -16,16 +16,16 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-1"
+  region = var.region
 }
 
 resource "aws_sqs_queue" "image_queue" {
-  name                        = "image-processing-queue"
+  name                        = "image-processing-queue-Kandidat57"
   visibility_timeout_seconds  = 60
 }
 
 resource "aws_iam_role" "lambda_execution_role" {
-  name = "lambda_execution_role"
+  name = "lambda_execution_role-Kandidat57"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -42,7 +42,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 
 resource "aws_iam_policy" "lambda_policy" {
-  name = "lambda_sqs_policy"
+  name = "lambda_sqs_policy-Kandidat57"
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -60,7 +60,7 @@ resource "aws_iam_policy" "lambda_policy" {
       {
         Action   = "s3:PutObject",
         Effect   = "Allow",
-        Resource = "arn:aws:s3:::pgr301-couch-explorers/*"
+        Resource = "arn:aws:s3:::${var.bucket_name}/*"
       },
       {
         Action   = "logs:*",
@@ -76,14 +76,13 @@ resource "aws_iam_policy" "lambda_policy" {
   })
 }
 
-
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = aws_iam_policy.lambda_policy.arn
 }
 
 resource "aws_lambda_function" "lambda_sqs_processor" {
-  function_name = "lambda-sqs-processor"
+  function_name = "lambda-sqs-processor-Kandidat57"
   role          = aws_iam_role.lambda_execution_role.arn
   handler       = "lambda_sqs.lambda_handler"
   runtime       = "python3.9"
@@ -92,8 +91,8 @@ resource "aws_lambda_function" "lambda_sqs_processor" {
   environment {
     variables = {
       SQS_QUEUE_URL = aws_sqs_queue.image_queue.id
-      S3_BUCKET     = "pgr301-couch-explorers"
-      BUCKET_NAME   = "pgr301-couch-explorers"
+      S3_BUCKET     = var.bucket_name
+      BUCKET_NAME   = var.bucket_name
     }
   }
 
