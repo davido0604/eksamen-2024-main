@@ -12,7 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Verify correct path
+      - name: Verify Directory Structure
+        run: ls -R eksamen-2024-main
+
+      - name: Verify Full Repository Structure
         run: ls -R
 
       - name: Navigate to SAM Lambda Directory
