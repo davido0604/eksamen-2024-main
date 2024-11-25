@@ -12,17 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.9.0
 
-      # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -30,18 +27,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      # Initialize Terraform
       - name: Terraform Init
         working-directory: infra
         run: terraform init
 
-      # Destroy old resources (main branch only)
-      - name: Terraform Destroy (main only)
-        if: github.ref_name == 'main'
-        working-directory: infra
-        run: terraform destroy -auto-approve
-
-      # Plan or Apply
       - name: Terraform Plan or Apply
         working-directory: infra
         run: |
@@ -49,3 +38,4 @@ jobs:
             terraform apply -auto-approve
           else
             terraform plan
+          fi
