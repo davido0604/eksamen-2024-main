@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List repository contents for debugging
+      - name: Debug repository structure
         run: ls -R
 
       - name: Configure AWS credentials
@@ -24,10 +24,10 @@ jobs:
       - name: Install AWS SAM CLI
         run: sudo pip install aws-sam-cli
 
-      - name: Verify directory exists
+      - name: Debug Verify correct path
         run: |
           cd eksamen-2024-main/sam_lambda/lambda-image-generator
-          pwd
+          ls
 
       - name: Build SAM Application
         run: |
