@@ -12,3 +12,8 @@ variable "suffix" {
   description = "Suffix for resource names to distinguish deployments"
   default     = "Kandidat57"
 }
+
+variable "alert_email" {
+  description = "Email address to receive CloudWatch alarm notifications"
+  default     = "dadi002@student.kristiania.no"
+}

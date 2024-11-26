@@ -105,3 +105,32 @@ resource "aws_lambda_event_source_mapping" "sqs_to_lambda" {
   function_name    = aws_lambda_function.lambda_sqs_processor.arn
   batch_size       = 10
 }
+
+resource "aws_sns_topic" "sqs_alarm_topic" {
+  name = "sqs_alarm_topic-Kandidat57"
+}
+
+resource "aws_sns_topic_subscription" "sqs_alarm_email_subscription" {
+  topic_arn = aws_sns_topic.sqs_alarm_topic.arn
+  protocol  = "email"
+  endpoint  = var.alert_email
+}
+
+resource "aws_cloudwatch_metric_alarm" "sqs_approximate_age_alarm" {
+  alarm_name          = "SQS-ApproximateAgeAlarm-Kandidat57"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  metric_name         = "ApproximateAgeOfOldestMessage"
+  namespace           = "AWS/SQS"
+  period              = 60
+  statistic           = "Maximum"
+  threshold           = 300
+
+  dimensions = {
+    QueueName = aws_sqs_queue.image_queue.name
+  }
+
+  alarm_description = "Trigges når ApproximateAgeOfOldestMessage overstiger 300 sekunder."
+  actions_enabled   = true
+  alarm_actions     = [aws_sns_topic.sqs_alarm_topic.arn]
+}
