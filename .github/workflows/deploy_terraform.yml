@@ -35,8 +35,9 @@ jobs:
         working-directory: infra
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "Running terraform apply on main branch"
             terraform apply -auto-approve
           else
+            echo "Running terraform plan on non-main branch"
             terraform plan
           fi
-          
