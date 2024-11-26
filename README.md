@@ -1,246 +1,101 @@
-# PGR301 EKSAMEN 2024 Couch Explorers - Bærekraftig turisme fra sofakroken ! 
+PGR301 DevOps i skyen -Skriftlig individuell hjemmeeksamen
 
-<img width="1181" alt="image" src="img/header.png">
+Kandidatnr.:57
 
-Som nyansatt i Couch Explorers – en spennende startup som gir brukerne muligheten til å reise verden rundt fra komforten av egen sofa – er du med på å utvikle fremtidens reiseløsning! Ved hjelp av kunstig intelligens genererer tjenesten imponerende bilder av kjente landemerker og unike reisemål fra alle verdenshjørner. 
 
-Disse bildene kan brukerne dele på sosiale medier som minner fra deres "reise", helt uten å forlate hjemmet! I fremtidige versjoner av tjenesten vil KI kunne trenes på bilder av brukerne selv, slik at vi kan lage mer realistiske selfies og kanskje til og med emulere retrofotografier som analog film og polaroid – for den ultimate lo-fi reisedokumentasjonen.
+Oppgave 1 - AWS Lambda
 
-Med et sterkt fokus på både KI og bærekraft, har selskapet allerede sikret finansiering for å videreutvikle denne banebrytende løsningen.
+Leveranse 1 (A - HTTP Endepunkt for Lambdaf unkskonen)
+https://54di67to21.execute-api.eu-west-1.amazonaws.com/Prod/hello
 
-Din rolle er å legge til rette for en smidig utviklingsprosess som følger strenge DevOps-prinsipper helt fra starten. Kvaliteten på koden vil variere, og når det er nødvendig, vil du få ansvaret for å implementere forbedringer og sikre at løsningen leverer på høyeste standard.
+Leveranse 2 (B - GitHub Actions workflow SAM-applikasjonen)
+https://github.com/davido0604/eksamen-2024-main/actions/runs/12020380133
 
-## Krav til leveransen
 
-**Eksamensoppgaven, kode og nødvendige filer er tilgjengelig i GitHub-repoet:**  
-[https://github.com/glennbechdevops/eksamen-2024](https://github.com/glennbechdevops/eksamen-2024).
 
-### Retningslinjer for innlevering
 
-**Wiseflow:**
-* Når du leverer oppgaven i WiseFlow, last opp et dokument som kun inneholder en lenke til ditt repository. Filen må være i PDF- eller tekstformat.
+Oppgave 2 - Infrastruktur med Terraform og SQS
 
-**GitHub**:
-* Ikke lag en fork av det opprinnelige repositoryet. Kopier i stedet innholdet til et repository du selv oppretter.
-* For å unngå at andre studenter ser din besvarelse, kan du gjerne jobbe i et privat repository. Gjør repositoryet offentlig rett før innleveringsfristen.
-* I repositoryet ditt skal du lage en fil, `README.md` for å besvare drøfte-oppgaver og oppgavespesifikke leveranser.
+Leveranse 1 (GitHub Actions workflow terraform main)
+https://github.com/davido0604/eksamen-2024-main/actions/runs/12022364820
 
-#### Viktig! Oppgavespesfikke leveranser 
+Leveranse 2 (GitHub Actions workflow terraform ikke main)
+https://github.com/davido0604/eksamen-2024-main/actions/runs/12022418344
 
-I hver oppgave er vil det være en eller flere konkrete leveranser. Dette kan for eksempel være lenker til en GitHub Actions workflow-kjøringer, et objekt i en S3 bucket osv. Dette er for å gjøre sensur mer effektivt. Pass på at du i ditt README dokument får med deg alle leveranser. 
-Lag en tabell i slutten av dokumentet på formatet 
+Leveranse 3 (SQS-Kø URL)
+https://sqs.eu-west-1.amazonaws.com/244530008913/image-processing-queue-Kandidat57
 
-* Oppgave 1
-* * Leveranse 1.
-  * Leveranse 2.
-* Oppgave 2
-* * Osv
 
-Hvis du velger å ikke svare på enkeltoppgaver, setter også sensor stor pris på at du nevner dette i besvarelsen.
 
-## Spesielle hensyn knyttet til Cloud 9
-Løsning på problem med diskplassmangel, eller rettigheter / IAM er beskrevet her - https://github.com/glennbechdevops/cloud9_tools
-Ved tekniske problemer med miljø under eksamen, kontakt lærer.
 
 
-# Evaluering
 
-- Oppgave 1. 30 Poeng. AWS Lambda og GitHub Actions 
-- Oppgave 2. 30 Poeng. Infrastruktur med Terraform of SQS
-- Oppgave 3. 15 Poeng. Javaklient og Docker 
-- Oppgave 4. 15 Poeng. Metrics og overvåkning
-- Oppgave 5. 10 Poeng. Drøft; Serverless, Function as a service vs Container-teknologi
 
-## Litt om AWS Bedrock 
 
-AWS Bedrock er en tjeneste fra Amazon som gir tilgang til ulike KI-modeller uten behov for å håndtere den tekniske infrastrukturen selv. I denne oppgaven skal du bli kjent med Amazons egen generative KI-modell for bilder, "Titan."
 
-Ved å bruke denne modellen kan du sende inn et "prompt," som for eksempel "en solnedgang over fjorden med fjell i bakgrunnen." Bedrock vil deretter generere et bilde som samsvarer med beskrivelsen.
+Oppgave 3 - Javaklient og Docker
 
-Funksjonaliteten vi trenger fra AWS Bedrock er foreløpig ikke tilgjengelig i Irland, så du vil se referanser til regionen "us-east-1" i koden. Likevel skal du bruke Irland (eu-west-1) som region for infrastrukturen din. Det er ingen problem for en Lambda-funksjon i Irland å benytte Bedrock-tjenesten i USA.
+Leveranse 1 (Beskrivelse av taggestrategi)
+Taggestrategien for oppgaven er basert på to ting: latest og Git commit SHA. latest viser alltid til den nyeste stabile versjonen av imaget, noe som gjør det lett for teamet å bruke den nyeste versjonen uten å måtte lete etter spesifikke tagger. Samtidig gir SHA-tagger, som er knyttet til hver commit, mulighet til å spore og bruke bestemte versjoner når det trengs. Denne løsningen er valgt fordi den gjør det enkelt i hverdagen samtidig som den gir god kontroll når man trenger å feilsøke eller teste eldre versjoner.
 
-## Oppgave 1 - AWS Lambda
 
-### A. Oppgave: Implementer en Lambda-funksjon med SAM og API Gateway
 
-I klassens delte AWS-konto finnes det en S3-bucket med navnet `pgr301-couch-explorers`. Din oppgave er å ta utgangspunkt i koden som ligger i `generate_image.py` og implementere denne funksjonaliteten som en AWS Lambda-funksjon ved hjelp av AWS SAM (Serverless Application Model). Lambda-funksjonen skal eksponeres gjennom et POST-endepunkt via API Gateway.
+Leveranse 2 (Container image + SQS URL)
+Container image: dadi002/java-sqs-client:latest
+SQS URL: https://sqs.eu-west-1.amazonaws.com/244530008913/image-processing-queue-Kandidat57
 
-Prøv gjerne pythonkoden først for å bli kjent med tjenesten. Bruk Cloud9 eller annet miljø med python installert, og installer avhengigheter i et nytt Python `virtual environment`
-```
-python3 -m venv .venv
-source .venv/bin/activate
-pip3 install boto3
-```
 
-Så kan du kjøre Pythonkoden 
-```
-python3 generate_image.py
-```
+GitHub Actions workflow container image til Docker Hub
+https://github.com/davido0604/eksamen-2024-main/actions/runs/12022823751
 
-Her er noen prompts dere kan forsøke
 
-1. **"Vintage Paris Trip"**: "Show me sitting at a classic Parisian café with the Eiffel Tower in the background, a coffee and croissant on the table. The image should have an old polaroid filter, with soft faded tones and a sunbeam lightly hitting the Eiffel Tower."
-2. **"Sunset Safari"**: "Place me in a jeep on an African savanna with lions and elephants in the background under a golden sunset. Use an analog 1980s photo effect with warm color tones, and give it a grainy texture for an authentic safari experience."
-3. **"Mountain Adventure"**: "Create a realistic image of me standing on the edge of a cliff with dramatic, snow-capped mountains stretching out behind me. Add a soft orange glow in the sky to mimic early morning light, and give the image a slightly grainy, retro film effect."
+Oppgave 4 - Metrics og overvåkning
 
-Eksempelbilde
+Commit med implementasjon: 
+https://github.com/davido0604/eksamen-2024-main/commit/e2c980c7e9928543c9439281d6812335b93bbd4d
 
-<img width="1014" alt="image" src="img/croissant.png">
 
-#### Trinn 1: Opprett en SAM-applikasjon
-1. Opprett en ny mappe i repositoryet ditt for SAM-applikasjonen, for eksempel kalt `sam_lambda`.
-2. Sett opp infrastrukturen for Lambda-funksjonen på en av følgende måter:
-   - Bruk `sam init` til å generere en ny SAM-applikasjon i Python.
-   - Alternativt, bruk filer fra et eksisterende SAM-prosjekt som utgangspunkt, og tilpass dem etter behov for denne oppgaven.
+Oppgave 5 - Serverless, Function as a service vs Container-teknologi
 
-#### Trinn 2: Skriv Lambda-funksjonen
+Når vi vurderer serverless arkitektur med FaaS som AWS lambda og meldingskøer som sqs, opp mot mikrotjenestebasert arkitektur, er det mange aspekter som skiller seg ut, spesielt når vi ser på DevOps-prinsipper som CI/CD, observability, skalerbarhet og eierskap. Her kommer min refleksjon etter å ha jobbet med dette gjennom oppgavene.
 
-Implementer koden fra `generate_image.py` som en Lambda-funksjon. Funksjonen skal motta en forespørsel via et POST-endepunkt, generere et bilde-  og deretter lagre det i S3-bucketen `pgr301-couch-explorers`. Bruk kandidatnummeret ditt som prefix, slik at URI-en til bildene dine blir `s3://pgr301-couch-explorers/<kandidatnr>/*`. Bildets prompt skal sendes som en  HTTP body i forespørselen.
 
-#### Trinn 3: Fjern hardkoding av bucket-navn fra koden
-For å gjøre løsningen mer fleksibel og profesjonell, skal du fjerne hardkodingen av S3-bucket-navnet fra `generate_image.py`. Definer bucket-navnet i SAM-templatefilen og bruk en dynamisk måte for funksjonen å hente dette navnet på, slik at du unngår å legge bucket-navnet direkte inn i koden.
+1. Automatisering og kontinuerlig levering (CI/CD)
 
-#### Trinn 4: Test og deploy SAM-applikasjonen
+En serverless arkitektur kan faktisk gjøre CI/CD enklere på noen måter, men også mer fragmentert. Når hver funksjon i lambda er en isolert komponent, kan man fokusere på små, målrettede enheter. Deployment kan gjøres raskt og med minimal overhead, men hvis du har mange funksjoner, kan det føles overveldende å holde oversikt over alle CI/CD-pipelines. Det blir som å måtte administrere flere små puslespillbrikker i stedet for en større helhet.
 
-1. Bygg Lambda-funksjonen lokalt med SAM CLI for å sikre at den fungerer som forventet.
-2. Deploy applikasjonen. Etter deploy bør du verifisere at POST-endepunktet fungerer, og at Lambda-funksjonen kan lagre filer i S3-bucketen `pgr301-couch-explorers`.
+For mikrotjenester er CI/CD mer rett frem. Du bygger og deployer kanskje hele tjenesten som en docker container, noe som føles mer håndterbart hvis man allerede har erfaring med slike workflows. Men oppdateringene kan være tregere, siden hele tjenesten må deployes, selv for små endringer. Dessuten må man passe på kompatibilitet mellom forskjellige tjenester.
 
-#### Tips og anbefalinger
-- **Timeout**: Husk at Lambdafunksjoner har en konfigurerbar timeout
-- **IAM-rolle**: Sørg for at Lambda-funksjonen har nødvendige tillatelser til å skrive til S3-bucketen, og kalle tjenesten AWS Bedrock
-- **Regionkonfigurasjon**: Husk at regionen for infrastrukturen skal være `eu-west-1`, selv om ressurser som AWS Bedrock kan ligge i andre regioner.
+Jeg føler at serverless kan være mer effektivt hvis man virkelig investerer i automatiseringsverktøy som SAM eller Terraform, men det kan kreve mer fra teamet for å sette opp robuste pipelines i starten. Mikrotjenester har en litt høyere inngangsbillett for verktøy som Kubernetes, men er lettere å vedlikeholde når det først er oppe.
 
-#### Leveranser
+2. Observability (overvåkning)
 
-* HTTP Endepunkt for Lambdafunksjonen som sensor kan teste med Postman
+Overvåkning i serverless kan være en utfordring fordi alt er fragmentert. Hver Lambda-funksjon har sine egne logger i CloudWatch, og hvis noe går galt, må man ofte hoppe mellom flere logger for å finne ut hva som skjedde. Hvis meldinger går via SQS, blir det enda mer utfordrende å spore hva som har skjedd. CloudWatch fungerer, men det er ikke alltid like lett å bruke når du vil ha et klart bilde av hele systemet.
 
-### B: Opprett en GitHub Actions Workflow for SAM-deploy
+Mikrotjenester gir mer kontroll fordi du kan samle all logging på ett sted, for eksempel i en fil eller en database. Det gjør feilsøking enklere fordi du kan følge hele flyten av en forespørsel gjennom tjenesten.
 
-Lag en GitHub Actions workflow som automatisk deployer Lambda-funksjonen hver gang det skjer en push til `main`-branchen i GitHub-repositoryet ditt. Denne workflowen skal automatisere hele prosessen slik at funksjonen blir oppdatert og tilgjengelig uten manuell deploy hver gang det gjøres endringer i koden.
+Jeg føler at serverless krever at man er veldig disiplinert med logging og overvåkning for å unngå kaos. Mikrotjenester føles litt mer håndterbart for meg akkurat nå, men jeg ser potensialet i serverless hvis man bruker gode verktøy.
 
-#### Steg for å lage workflow:
-1. Opprett en ny YAML-fil i `.github/workflows`-mappen i repositoryet ditt (for eksempel `deploy_lambda.yml`).
-2. Definer workflowen slik at den bygger og deployer SAM-applikasjonen:
-   - Pass på at workflowen har tilgang til nødvendige AWS Access Keys/Credentials (via GitHub Secrets) slik at deploy-prosessen kan fullføres.
 
-#### Leveransekrav:
-- **Lenke til kjørt GitHub Actions workflow:** Lever en lenke til en vellykket kjøring av GitHub Actions workflow som har deployet SAM-applikasjonen til AWS.
 
+3. Skalerbarhet og kostnadskontroll
 
-## Oppgave 2  - Infrastruktur med Terraform og SQS
-  
-### A. Infrastruktur som kode
+Serverless er utrolig fleksibelt når det kommer til skalerbarhet. AWS lambda skalerer automatisk basert på trafikk, og du betaler bare for funksjonene når de faktisk kjører. Det er genialt for uforutsigbare arbeidsbelastninger. Men hvis en funksjon kjører veldig ofte eller lenge, kan det bli dyrt fordi du betaler per millisekund.
 
-Utviklingsteamet innser raskt at asynkronitet er avgjørende for å bygge løsninger som skalerer godt. Under en privat beta med kun 1000 brukere gikk den SAM-baserte Lambda-funksjonen på en skikkelig smell – brukerne opplevde timeouts og feil i mobilappene. Hovedproblemet er at det tar opptil 10 sekunder å generere et bilde, og når mange brukere er på samtidig, oppstår det alvorlige ytelsesproblemer.
+Mikrotjenester krever mer manuelt arbeid for å skalere. Du må konfigurere auto skalering for containerne eller serverne, noe som gir deg mer kontroll, men det tar tid å sette opp riktig. På den positive siden har du en fast kostnad hvis arbeidsbelastningen er stabil, fordi du allerede har allokert ressurser.
 
-Den tidligere systemarkitekten, Frank, hadde allerede forutsett denne utfordringen før han trakk seg ut og tok med seg en stor del av venturekapitalen til Sør-Amerika. Han utviklet en løsning som bruker SQS til å håndtere asynkrone meldinger mellom klientene og bildegenereringskoden. Ved å introdusere en SQS-kø mellom klientene og bildeprosesseringskoden, oppnår vi en mye mer skalerbar løsning. Når belastningen øker, blir konsekvensen kun at det tar litt lengre tid før bildet er klart, uten at systemet må håndtere alle forespørsler samtidig. Denne løsningen ligger i filen `lambda_sqs` og inneholder en Lambda-funksjon som mottar meldinger fra SQS, noe som gir en effektiv og skalerbar tilnærming til bildeprosesseringen.
+For meg virker serverless perfekt for små prosjekter eller systemer med uforutsigbar trafikk. Mikrotjenester gir mer forutsigbare kostnader og ytelse hvis man har et godt overblikk over trafikken.
 
-Siden denne Lambda-funksjonen er relativt enkel og skrevet i Python, vurderer du at Terraform kan være et godt valg for å sette opp både Lambda og infrastruktur.
+4. Eierskap og ansvar
 
-#### Oppgave
+I en serverless arkitektur overlater du mye av infrastrukturen til AWS. De tar seg av skalering, patching og vedlikehold. Det er både bra og dårlig. Det er mindre ansvar for DevOps-teamet, men det betyr også at du har mindre kontroll. Hvis noe går galt med en lambda funksjon eller SQS, må du ofte vente på AWS for å løse problemet.
 
-I en ny mappe, for eksempel `infra` - Skriv Terraformkode for å konfigurere:
+Med mikrotjenester har teamet full kontroll over infrastrukturen. Du styrer alt, fra servere til konfigurasjon. Det gir mer ansvar, men også mer fleksibilitet. Du kan tilpasse løsningen til dine behov uten å være avhengig av AWS begrensninger.
 
-- Lambda-funksjonen med SQS-integrasjon (bruk koden i `lambda_sqs.py`)
-- Din egen SQS-kø og nødvendig integrasjon for AWS Lambda
-- Nødvendige IAM-ressurser mm.
+Jeg tror serverless er flott for mindre team som ikke har tid eller ressurser til å vedlikeholde kompleks infrastruktur. Mikrotjenester krever mer arbeid, men gir også større frihet.
 
-Bruk AWS-provider og en Terraform state-fil som lagres i S3-bucketen `pgr301-2024-terraform-state`.
-Konfigurer Terraform-provideren til å kreve Terraform-versjon over 1.9 og AWS-provider versjon 5.74.0.
+Konklusjon
 
-**Skriv om koden** Lambdakoden skal lagre filer på samme lokasjon som SAM applikasjonen  _s3://pgr301-couch-explorers/<kandidatnr>/*_
+Å velge mellom serverless og mikrotjenester handler om hva slags behov prosjektet har. Serverless er perfekt for dynamiske, skalerbare systemer, men kan bli kaotisk hvis man ikke har gode rutiner for logging og CI/CD. Mikrotjenester er mer tradisjonelle og gir teamet mer kontroll, men krever mer arbeid for å håndtere skalering og vedlikehold.
 
-#### Tips og anbefalinger
-- **Timeout**: Husk at Lambdafunksjoner har en konfigurerbar timeout
-
-### B. Opprett en GitHub Actions Workflow for Terraform
-
-Lag en GitHub Actions workflow som håndterer deploy av infrastrukturen til AWS ved å kjøre Terraform-koden. Workflowen skal kjøre forskjellige Terraform-kommandoer basert på hvilken branch det pushes til, slik at endringer kan testes og gjennomgås før de gjøres permanent på hovedinfrastrukturen.
-
-#### Spesifikasjoner for workflowen:
-
-1. **Oppsett av jobber i workflowen**:
-   - Opprett en ny YAML-fil i `.github/workflows`-mappen i repositoryet ditt, for eksempel `terraform_deploy.yml`.
-   - Pass på at workflowen har tilgang til nødvendige AWS Access Keys/Credentials (GitHub repository Secrets) for å kunne kjøre Terraform-kommandoene og oppdatere infrastrukturen i AWS.
-
-2. **Branch-spesifik oppførsel**:
-   - Når det gjøres en push til `main`-branchen, skal workflowen automatisk kjøre `terraform apply` for å oppdatere infrastrukturen med eventuelle endringer. Dette sørger for at alle oppdateringer til `main` direkte reflekteres i den live AWS-infrastrukturen.
-   - For push til andre brancher enn `main`, skal workflowen kjøre `terraform plan`. Dette lar utviklingsteamet se en plan for hvilke endringer som ville blitt gjort, uten å faktisk oppdatere infrastrukturen. Det gir mulighet for gjennomgang og testing av infrastrukturendringer før de merges til `main`.
-
-
-#### Leveransekrav:
-- **Lenke til kjørt GitHub Actions workflow**: Lever en lenke til en vellykket kjøring av workflowen der infrastrukturkoden har blitt deployet ved bruk av `terraform apply` på en push til `main`.
-- **Lenke til en fungerende GitHub Actions workflow (ikke main)**: Lever en lenke til en vellykket kjøring av workflowen der infrastrukturkode baree  gjør `terraform plan` 
-- **SQS-Kø URL**: Http Url for SQS kø. Sensor vil teste å sende melding til denne. 
-  
-## Oppgave 3. Javaklient og Docker
-
-Teamet har kommet fram til at det kan være lurt å ha en klient som tester SQS-løsningen ved å sende meldinger til køen. "Frank" har allerede skrevet koden for dette – men han glemte kanskje at resten av utviklerne er typen som foretrekker Clojure og Lisp. Koden ligger i mappen `java_sqs_client`
-
-Du kan teste Java-koden ved å kjøre den som en JAR-fil. Ved å lese gjennom koden vil du se at den henter `SQS_QUEUE_URL` fra en miljøvariabel og tar et bildeprompt som argument fra kommandolinjen. Deretter legger den en melding på SQS-køen og skriver ut meldings-ID-en.
-
-```shell
-mvn package
-export SQS_QUEUE_URL=https://<din SQS kø HTTPS url>
-java -jar target/imagegenerator-0.0.1-SNAPSHOT.jar "Me on top of K2"
-```
-
-Din oppgave er nå å lage et Docker-image av Java-koden, slik at andre på teamet kan bruke den uten å måtte ha Java installert lokalt. 
-
-### A. Skriv en Dockerfile
-
-Lag en `Dockerfile` for Java-koden som både bygger og kjører applikasjonen i et effektivt og kompakt image. Et tips er å bruke en multi-stage Dockerfile for å først kompilere koden og deretter kjøre den i et minimalt runtime-miljø. Dette reduserer imagestørrelsen og gjør det enklere å distribuere.
-
-### B. Lag en GitHub Actions workflow som publiserer container image til Docker Hub
-
-Lag en GitHub Actions workflow som bygger og publiserer Docker-imaget til din konto på Docker Hub (https://hub.docker.com/) hver gang det gjøres en push til `main`-branchen. Denne workflowen skal automatisere prosessen, slik at teamet alltid har tilgang til den nyeste versjonen av klienten.
-Lag en konto på Docker Hub om du ikke allerede har en.
-
-#### Spesifikasjoner for workflowen:
-1. **Opprett en workflow-fil**:
-   - Lag en ny YAML-fil i `.github/workflows`, for eksempel `docker_publish.yml`.
-2. **Konfigurer jobber i workflowen**:
-   - Inkluder steg for å sjekke ut koden, logge inn på Docker Hub (ved hjelp av credentials lagret i GitHub Secrets), bygge Docker-imaget, tagge det, og deretter pushe det til Docker Hub-kontoen din.
-3. **Triggering**:
-   - Sett opp workflowen til å kjøre automatisk ved hver push til `main`-branchen, slik at endringer i koden alltid blir reflektert i det publiserte imaget.
-
-Du står fritt til å velge en strategi for hvordan du vil tagge container image på DockerHub. Men i denne oppgaven sin leveranse 
-skal du gjøre rede for valget ditt. 
-
-#### Leveranser
-
-- **Beskrivelse av taggestrategi**: Forklar kort hvordan du har valgt å tagge container imagene dine, og gi en begrunnelse for denne strategien.
-
-- **Container image + SQS URL**: Lever kun image-navnet fra din Dockerhub-konto (for eksempel **glennbech/couchexplore-client**). Sensor vil bruke dette navnet til å kjøre container imaget ditt ved hjelp av en Docker-kommando.
-```
-docker run -e AWS_ACCESS_KEY_ID=xxx -e AWS_SECRET_ACCESS_KEY=yyy -e SQS_QUEUE_URL=<SQS_QUEUE_URL> _dockerhub_user/repo_ "me on top of a pyramid"
-```
-
-## Oppgave 4: Metrics og overvåkning
-
-Selv med en asynkron løsning er utviklingsteamet bekymret for responstider og brukeropplevelsen. Et sentralt DevOps-prinsipp er Feedback, slik at vi raskt kan fange opp problemer – helst før brukerne merker dem. Noen brukere har allerede gitt dårlige anmeldelser i Apple Store og klaget over at det tar "lang" tid før bildene vises, ofte flere minutter.
-
-For å overvåke løsningen foreslår du å sette opp en CloudWatch-alarm på SQS-metrikken **ApproximateAgeOfOldestMessage**. Denne metrikken måler (i sekunder) hvor gammel den eldste meldingen i køen er, noe som kan indikere forsinkelser i behandlingen av forespørsler.
-
-### A. Infrastrukturkode
-
-Utvid Terraform-koden fra Oppgave 2 med en CloudWatch-alarm som trigges når verdien for **ApproximateAgeOfOldestMessage** blir for høy. Du kan selv velge passende terskler for alarmen. Når alarmen utløses, skal en e-post sendes til en adresse spesifisert som en variabel i Terraform-koden.
-
-
-## Oppgave 5. Serverless, Function as a service vs Container-teknologi
-
-Drøft implikasjonene ved å implementere et system basert på en serverless arkitektur med Function-as-a-Service (FaaS)-tjenester som AWS Lambda og meldingskøer som Amazon SQS, sammenlignet med en mikrotjenestebasert arkitektur. Legg merke til at komponentantallet ofte vil variere mellom disse tilnærmingene; en mikrotjeneste kan ofte brytes ned til flere mindre, selvstendige funksjoner i en serverless arkitektur, noe som fører til flere komponenter med egne livssykluser og behov for utrulling, versjonskontroll, overvåkning osv.
-
-Drøft og vurder implikasjonene i lys av følgende DevOps-prinsipper:
-
-1. **Automatisering og kontinuerlig levering (CI/CD)**: Hvordan påvirker serverless-arkitektur sammenlignet med mikrotjenestearkitektur CI/CD-pipelines, automatisering, og utrullingsstrategier?
-
-2. **Observability (overvåkning)**: Hvordan endres overvåkning, logging og feilsøking når man går fra mikrotjenester til en serverless arkitektur? Hvilke utfordringer er spesifikke for observability i en FaaS-arkitektur?
-
-3. **Skalerbarhet og kostnadskontroll**: Diskuter fordeler og ulemper med tanke på skalerbarhet, ressursutnyttelse, og kostnadsoptimalisering i en serverless kontra mikrotjenestebasert arkitektur.
-
-4. **Eierskap og ansvar**: Hvordan påvirkes DevOps-teamets eierskap og ansvar for applikasjonens ytelse, pålitelighet og kostnader ved overgang til en serverless tilnærming sammenlignet med en mikrotjeneste-tilnærming?
-
-I besvarelsen bør du trekke frem styrker og svakheter ved hver tilnærming, med tanke på de nevnte DevOps-aspektene.
-
-## LYKKE TIL OG HA DET GØY MED OPPGAVEN!
+Etter å ha jobbet med begge, ser jeg fordelene med serverless for spesifikke oppgaver, som bildegenerering med Lambda og SQS. Men mikrotjenester føles fortsatt som en tryggere løsning hvis teamet er vant til å håndtere infrastruktur. Jeg tror valget handler om å balansere fleksibilitet, kontroll og hvor mye teamet er villig til å vedlikeholde.
