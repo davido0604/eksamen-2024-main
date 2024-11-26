@@ -57,12 +57,12 @@ https://github.com/davido0604/eksamen-2024-main/commit/e2c980c7e9928543c9439281d
 
 Oppgave 5 - Serverless, Function as a service vs Container-teknologi
 
-Når vi vurderer serverless arkitektur med FaaS som AWS lambda og meldingskøer som sqs, opp mot mikrotjenestebasert arkitektur, er det mange aspekter som skiller seg ut, spesielt når vi ser på DevOps-prinsipper som CI/CD, observability, skalerbarhet og eierskap. Her kommer min refleksjon etter å ha jobbet med dette gjennom oppgavene.
+Når vi vurderer serverless arkitektur med FaaS som AWS lambda og meldingskøer som sqs, opp mot mikrotjenestebasert arkitektur, er det mange aspekter som skiller seg ut, spesielt når vi ser på DevOps prinsipper som CI/CD, observability, skalerbarhet og eierskap. Her kommer min refleksjon etter å ha jobbet med dette gjennom oppgavene.
 
 
 1. Automatisering og kontinuerlig levering (CI/CD)
 
-En serverless arkitektur kan faktisk gjøre CI/CD enklere på noen måter, men også mer fragmentert. Når hver funksjon i lambda er en isolert komponent, kan man fokusere på små, målrettede enheter. Deployment kan gjøres raskt og med minimal overhead, men hvis du har mange funksjoner, kan det føles overveldende å holde oversikt over alle CI/CD-pipelines. Det blir som å måtte administrere flere små puslespillbrikker i stedet for en større helhet.
+En serverless arkitektur kan faktisk gjøre CI/CD enklere på noen måter, men også mer fragmentert. Når hver funksjon i lambda er en isolert komponent, kan man fokusere på små, målrettede enheter. Deployment kan gjøres raskt og med minimal overhead, men hvis du har mange funksjoner, kan det føles overveldende å holde oversikt over alle CI/CD pipelines. Det blir som å måtte administrere flere små puslespillbrikker i stedet for en større helhet.
 
 For mikrotjenester er CI/CD mer rett frem. Du bygger og deployer kanskje hele tjenesten som en docker container, noe som føles mer håndterbart hvis man allerede har erfaring med slike workflows. Men oppdateringene kan være tregere, siden hele tjenesten må deployes, selv for små endringer. Dessuten må man passe på kompatibilitet mellom forskjellige tjenester.
 
