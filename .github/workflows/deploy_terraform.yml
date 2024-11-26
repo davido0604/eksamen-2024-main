@@ -31,11 +31,6 @@ jobs:
         working-directory: infra
         run: terraform init
 
-      - name: Terraform Destroy (main only)
-        if: github.ref_name == 'main'
-        working-directory: infra
-        run: terraform destroy -auto-approve
-
       - name: Terraform Plan or Apply
         working-directory: infra
         run: |
@@ -43,3 +38,4 @@ jobs:
             terraform apply -auto-approve
           else
             terraform plan
+          fi
